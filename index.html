@@ -70,17 +70,19 @@
 
   <div id="progress"></div>
   <div id="backToStart">Restart</div>
-  <div id="pageNumber">Page 1 / 25</div>
+  <div id="pageNumber">Page 1 / 26</div>
 
   <!-- StPageFlip -->
   <script src="pageflip/page-flip.browser.js"></script>
 
   <script>
-    const totalPages = 25;
+    const totalPages = 26; // Cover + 25 pages
 
     // Build image list
     const pages = [];
-    for (let i = 1; i <= totalPages; i++) {
+    pages.push("images/Cover.jpg"); // Add cover first (capital C)
+
+    for (let i = 1; i <= 25; i++) {
       pages.push(`images/${i}.jpg`);
     }
 
@@ -89,7 +91,7 @@
       width: 800,
       height: 1000,
       size: 'stretch',
-      showCover: false,
+      showCover: true, // Treat first page as a single cover
       maxShadowOpacity: 0.5,
       usePortrait: false,
       mobileScrollSupport: false
@@ -112,9 +114,9 @@
 
     // Restart button
     document.getElementById("backToStart").onclick = () => {
-      flipbook.flip(0); // jump to first page
+      flipbook.flip(0); // jump to cover
       document.getElementById("progress").style.width = "0%";
-      document.getElementById("pageNumber").innerText = "Page 1 / 25";
+      document.getElementById("pageNumber").innerText = "Page 1 / 26";
     };
   </script>
 </body>
