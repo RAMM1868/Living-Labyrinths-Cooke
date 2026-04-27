@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cooke Flipbook</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #flipbook {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Progress bar */
+    #progress {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 6px;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s ease;
+      z-index: 9999;
+    }
+
+    /* Back to Start button */
+    #backToStart {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 16px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10000;
+      font-family: sans-serif;
+    }
+
+    #backToStart:hover {
+      background: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="flipbook"></div>
+  <div id="progress"></div>
+  <div id="backToStart">Back to start</div>
+
+  <!-- StPageFlip -->
+  <script src="pageflip/page-flip.browser.js"></script>
+
+  <script>
+    const totalPages = 34;
+
+    // Build image list
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(`images/${i}.jpg`);
+    }
+
+    // Create flipbook
+    const flipbook = new St.PageFlip(document.getElementById('flipbook'), {
+      width: 800,
+      height: 1000,
+      size: 'stretch',
+      showCover: false,
+      maxShadowOpacity: 0.5,
+      usePortrait: false,
+      mobileScrollSupport: false
+    });
+
+    flipbook.loadFromImages(pages);
+
+    // Initial progress bar
+    document.getElementById("progress").style.width = "0%";
+
+    // Update progress bar on flip
+    flipbook.on("flip", (e) => {
+      const current = e.data; // zero-based index
+      const percent = (current / (pages.length - 1)) * 100;
+      document.getElementById("progress").style.width = percent + "%";
+    });
+
+    // Back to Start button
+    document.getElementById("backToStart").onclick = () => {
+      flipbook.flip(0); // jump to first page
+      document.getElementById("progress").style.width = "0%";
+    };
+  </script>
+</body>
+</html>
